@@ -1,0 +1,26 @@
+.light {
+    --light-size: 24px;
+    --normal-color: #52c41a;
+    --alert-color: #ff4d4f;
+  
+    width: var(--light-size);
+    height: var(--light-size);
+    border-radius: 50%;
+    border:1px solid #00afff;
+    background-color: var(--normal-color);
+    transition: background-color 0.3s ease-in-out; // 颜色过渡动画
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  
+  
+    &.alert {
+      background-color: var(--alert-color);
+      animation: alert-pulse 1.5s infinite; // 添加呼吸动画
+    }
+  }
+  
+  // 呼吸动画
+  @keyframes alert-pulse {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+  }

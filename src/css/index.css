@@ -1,0 +1,136 @@
+.dev-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw;
+  max-height: 85vh;
+  min-height: 85vh;
+  justify-content: space-evenly;
+  border-radius: 10px;
+  box-shadow: 0 0 1.5vw #1ae6ee inset;
+  cursor: pointer;
+  text-align: center;
+  background: linear-gradient(to left, var(--borderColor), var(--borderColor))
+      left top no-repeat,
+    linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left top
+      no-repeat,
+    linear-gradient(to left, var(--borderColor), var(--borderColor)) right top
+      no-repeat,
+    linear-gradient(to bottom, var(--borderColor), var(--borderColor)) right top
+      no-repeat,
+    linear-gradient(to left, var(--borderColor), var(--borderColor)) left bottom
+      no-repeat,
+    linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left
+      bottom no-repeat,
+    linear-gradient(to left, var(--borderColor), var(--borderColor)) right
+      bottom no-repeat,
+    linear-gradient(to left, var(--borderColor), var(--borderColor)) right
+      bottom no-repeat;
+  transition: all 0.4s ease;
+  animation: alert-pulse 3s linear infinite;
+}
+
+.dev-list-header {
+  background-size: contain;
+  background-position: top;
+  background-repeat: no-repeat;
+  display: flex;
+  width: 100%;
+  height: 10vh;
+  background-image: url(/src/assets/images/dev-list-header.png);
+}
+
+.dev-list-area {
+  width: 100%;
+  height: 100%;
+}
+
+.dev-list-header-title {
+  display: flex;
+  height: 3vh;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+}
+.dev-list-header-title-icon {
+  width: 15%;
+  display: flex;
+  height: 90%;
+}
+.dev-list-header-title-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.dev-list-header-title-text {
+  font-weight: bold;
+  font-size: 3vh;
+  color: white;
+  margin-right: 5%;
+}
+@keyframes alert-pulse {
+  0% {
+    border-radius: 10px;
+    box-shadow: 0 0 1.5vw #0c7579 inset;
+    cursor: pointer;
+    text-align: center;
+    background: linear-gradient(to left, var(--borderColor), var(--borderColor))
+        left top no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left
+        top no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right top
+        no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) right
+        top no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) left
+        bottom no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left
+        bottom no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right
+        bottom no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right;
+  }
+  50% {
+    border-radius: 10px;
+    box-shadow: 0 0 1.5vw #00f7ff inset;
+    cursor: pointer;
+    text-align: center;
+    background: linear-gradient(to left, var(--borderColor), var(--borderColor))
+        left top no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left
+        top no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right top
+        no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) right
+        top no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) left
+        bottom no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left
+        bottom no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right
+        bottom no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right
+        bottom no-repeat;
+    transition: all 0.4s ease;
+  }
+  100% {
+    border-radius: 10px;
+    box-shadow: 0 0 1.5vw #0c7579 inset;
+    cursor: pointer;
+    text-align: center;
+    background: linear-gradient(to left, var(--borderColor), var(--borderColor))
+        left top no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left
+        top no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right top
+        no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) right
+        top no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) left
+        bottom no-repeat,
+      linear-gradient(to bottom, var(--borderColor), var(--borderColor)) left
+        bottom no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right
+        bottom no-repeat,
+      linear-gradient(to left, var(--borderColor), var(--borderColor)) right;
+  }
+}

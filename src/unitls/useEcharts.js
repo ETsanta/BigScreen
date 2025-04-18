@@ -18,8 +18,8 @@ const useECharts = ({
     }
 
     // 处理不同的 container 格式
-    const containerElement = container instanceof HTMLElement 
-      ? container 
+    const containerElement = container instanceof HTMLElement
+      ? container
       : container.current;
 
     if (!containerElement) {
@@ -64,12 +64,17 @@ const useECharts = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [resize]);
 
+
   // 手动触发 resize 的方法
   const resizeChart = () => {
     chartInstance.current?.resize();
   };
 
-  return { chartInstance, resizeChart };
+  const setOptions = (newOptions) => {
+    chartInstance.current?.setOption(newOptions);
+  };
+
+  return { chartInstance, resizeChart, setOptions };
 };
 
 export default useECharts;
