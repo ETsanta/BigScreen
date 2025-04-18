@@ -24,14 +24,14 @@ const DeviceList = () => {
         checked: true
     })
 
-    const AlertLight = ({ status = 0, size = 24, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
+    const AlertLight = ({ status = 0, size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
         return (
             <div
                 className={classNames(styles.light, {
                     [styles.alert]: status === 1,  // 当 status=1 时添加 alert 类名
                 })}
                 style={{
-                    '--light-size': `${size}px`,     // 动态控制尺寸
+                    '--light-size': `${size}vw`,     // 动态控制尺寸
                     '--normal-color': colorMap[0],    // 默认状态颜色
                     '--alert-color': colorMap[1],     // 告警状态颜色
                 } as React.CSSProperties}
@@ -76,7 +76,7 @@ const DeviceList = () => {
                         <span className="device-item">开动率</span>
                         <Progress theme="plump" size="small" color="#2fffff" trackColor="#344955" style={{ color: "#fff", width: "5vw" }} percentage={tableData.percent}></Progress>
                     </div>
-                    <Switch size="medium" value={tableData.checked}></Switch>
+                    <Switch size="small" value={tableData.checked}></Switch>
                 </div>
                 <div className="device-runTime"><span className="device-item">运行时间</span><span className="device-runTime-time">{tableData.runTime}min</span></div>
                 <div className="sensor-list">
