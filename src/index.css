@@ -23,12 +23,14 @@ a:hover {
 }
 
 body {
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: 0;
-  /* display: flex;
-  place-items: center; */
   padding: 0;
   min-width: 100vw;
   min-height: 100vh;
+  background-image: url(/src/assets/images/bkl.png);
+  background-position: center;
 }
 
 h1 {

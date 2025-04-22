@@ -52,9 +52,8 @@
   align-items: center;
 }
 .dev-list-header-title-icon {
-  width: 15%;
+  width: 15vw;
   display: flex;
-  height: 90%;
 }
 .dev-list-header-title-icon img {
   width: 100%;
@@ -63,9 +62,13 @@
 
 .dev-list-header-title-text {
   font-weight: bold;
-  font-size: 3vh;
+  font-size: 1.2vw;
   color: white;
-  margin-right: 5%;
+}
+
+.dev-list-chart{
+  display: flex;
+  justify-content: space-evenly;
 }
 @keyframes alert-pulse {
   0% {

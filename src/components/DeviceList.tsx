@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import DeviceImg from "@/assets/images/device.png"
 import "@/css/DeviceList.less"
-import { Progress, Switch } from 'tdesign-react';
 import classNames from 'classnames';
 import styles from "@/css/AlertLight.module.less";
+import StatusDot from "@/components/Status";
 
 
-const DeviceList = () => {
+const DeviceList = ( { Data={} } ) => {
     const scale = 0.8;
     const [width, setWidth] = useState(1);
     const [height, setHeight] = useState(0);
@@ -21,7 +21,7 @@ const DeviceList = () => {
             status: 0,
         }],
         name: "冲呀1",
-        checked: true
+        checked: 1
     })
 
     const AlertLight = ({ status = 0, size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
@@ -62,7 +62,9 @@ const DeviceList = () => {
     function handleResize() {
         convertVhToPx()
     }
+
     window.addEventListener('resize', handleResize);
+
     useEffect(() => {
         convertVhToPx();
     }, []);
@@ -70,13 +72,18 @@ const DeviceList = () => {
         <>
             <div className="device-list">
                 <div className="device-name">{tableData.name}</div>
-                <img src={DeviceImg} alt="" width={width + 'px'} height={height + 'px'} />
-                <div className="progress-bar">
-                    <div style={{ display: "flex", flex: 0.9, justifyContent: "space-between" }}>
-                        <span className="device-item">开动率</span>
-                        <Progress theme="plump" size="small" color="#2fffff" trackColor="#344955" style={{ color: "#fff", width: "5vw" }} percentage={tableData.percent}></Progress>
+                <img src={DeviceImg} alt={tableData.name} width={width + 'px'} height={height + 'px'} />
+                <div className="run-bar">
+                    <div style={{
+                        gap: "0.5vw",
+                        display: "flex",
+                        flex: 0.9,
+                        justifyContent: "flex-start",
+                        alignItems: "center"
+                    }}>
+                        <span className="device-item">运行状态</span>
+                        <StatusDot status={tableData.checked == 0}></StatusDot>
                     </div>
-                    <Switch size="small" value={tableData.checked}></Switch>
                 </div>
                 <div className="device-runTime"><span className="device-item">运行时间</span><span className="device-runTime-time">{tableData.runTime}min</span></div>
                 <div className="sensor-list">
@@ -84,7 +91,7 @@ const DeviceList = () => {
                         tableData.lights.map((item, index) => <WarnLight key={index} name={item.name} status={item.status} />)
                     }
                 </div>
-            </div>
+            </div >
         </>
     )
 };

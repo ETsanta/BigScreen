@@ -1,5 +1,6 @@
 import { useEffect, useRef, MutableRefObject } from 'react';
 import * as echarts from 'echarts';
+import { nextTick } from '@/unitls/nextTick';
 
 
 const useECharts = ({
@@ -57,7 +58,9 @@ const useECharts = ({
     if (!resize || !chartInstance.current) return;
 
     const handleResize = () => {
-      chartInstance.current?.resize();
+      nextTick(() => {
+        chartInstance.current?.resize();
+      })
     };
 
     window.addEventListener('resize', handleResize);
