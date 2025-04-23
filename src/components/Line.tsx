@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import useECharts from "@/unitls/useEcharts";
 import { cloneDeep } from "lodash-es";
+import { useDeepCompareEffect } from 'ahooks'; 
 
 
 interface DeviceContext {
@@ -97,94 +98,85 @@ const BarChartComponent = ({
     resize: true,
   });
 
-  function initChart() {
-    if (option) {
-      Object.assign(options, cloneDeep(option));
-    }
-
-    let seriesParam = []
-    let flag = 0
-    let legend = []
-    for (let i = 0; i < chartData.list.length; i++) {
-      const element = chartData.list[i];
-      for (let j = 0; j < element.axis.length; j++) {
-        const childName = element.axis[j];
-        const childData = element.data[j];
-        legend.push(element.name + "-" + childName);
-        let param = {
-          data: childData,
-          name: element.name + "-" + childName,
-          type: "line",
-          smooth: true,
-          showSymbol: false,
-          color: colorList[flag],
-          markPoint: {
-            showSymbol: true,
-            symbolSize: 0,
-            symbol: "circle",
-            symbolOffset: [0, 0],
-            label: {
-              borderRadius: 200,
-              distance: 1,
-              formatter: [
-                '    {d|●}',
-                ' {a|{c}}',
-                '    {b|}'
-              ].join(''),
-              rich: {
-                d: {
-                  color: 'inherit',
-                },
-                a: {
-                  color: '#fff',
-                  align: 'center',
-                },
-              }
-
-            },
-
-            data: [
-              {
-                type: 'max',
-                name: '最大值',
-              },
-            ],
-          },
-          lineStyle: {
-            color: colorList[flag],
-            width: 2,
-          },
-        }
-        flag++
-        seriesParam.push(param);
+  const initChart = useCallback(() => {
+    setOption(prevOptions => {
+      // 深拷贝当前配置并合并传入的option
+      const newOptions = cloneDeep(prevOptions);
+      if (option) {
+        Object.assign(newOptions, cloneDeep(option));
       }
 
-    }
-    setOption(prev => ({
-      ...prev,
-      title: {
-        ...prev.title,
-        text: chartData.name  // 修改 title.text
-      },
-      legend: {
-        ...prev.legend,
-        data: legend // 修改 legend.data
-      },
-      xAxis: {
-        ...prev.xAxis,
-        data: chartData.time // 修改 xAxis.data
-      },
-      series: seriesParam
-    }));
+      // 生成series和legend逻辑
+      let seriesParam = [];
+      let flag = 0;
+      let legend = [];
+      for (const element of chartData.list) {
+        for (let j = 0; j < element.axis.length; j++) {
+          const childName = element.axis[j];
+          const childData = element.data[j];
+          legend.push(element.name + "-" + childName);
+          let join = (j % 2) == 0 ? [
+            ' {a|{c}}',
+            '{d|●}'
+          ].join('') : [
+            '  {d|●}',
+            '  {a|{c}}'
+          ].join('');
+          let param = {
+            data: childData,
+            name: element.name + "-" + childName,
+            type: "line",
+            smooth: true,
+            showSymbol: false,
+            color: colorList[flag],
+            markPoint: {
+              showSymbol: true,
+              symbolSize: 0,
+              symbol: "circle",
+              label: {
+                borderRadius: 200,
+                formatter: join,
+                rich: {
+                  d: {
+                    color: 'inherit',
+                  },
+                  a: {
+                    color: '#fff',
+                    align: 'center',
+                  },
+                }
 
-  }
-  useEffect(() => {
+              },
+              data: [
+                {
+                  type: 'max',
+                  name: '最大值',
+                },
+              ],
+            },
+            lineStyle: {
+              color: colorList[flag],
+              width: 2,
+            },
+          }
+          flag++
+          seriesParam.push(param);
+        }
+      }
+
+      // 更新配置项
+      newOptions.title.text = chartData.name;
+      newOptions.legend.data = legend;
+      newOptions.xAxis.data = chartData.time;
+      newOptions.series = seriesParam;
+
+      return newOptions;
+    });
+  }, [option, chartData, colorList]);
+  useDeepCompareEffect(() => {
     initChart();
   }, [chartData, height, width]);
 
-  useEffect(() => {
-    setOptions(options);
-  }, [options]);
   return <div ref={containerRef} style={{ width: width, height: height }} />;
 };
 

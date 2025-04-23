@@ -33,7 +33,7 @@ const pageThree = ({ ListData = [] }: { ListData: Device[] }) => {
         </div>
         <div className="dev-list-chart">
           {Array.from({ length: 2 }).map((_, index) => (
-            <Line chartData={ListData[9 + index]} key={9 + index} height="20vh" width="30vw" />
+            <Line chartData={ListData[9 + index]} key={9 + index} height="20vh" width="46vw" />
           ))}
         </div>
       </div>

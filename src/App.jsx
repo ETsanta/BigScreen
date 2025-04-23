@@ -9,10 +9,9 @@ import PageTwo from "@/components/PageTwo";
 import PageThree from "@/components/PageThree";
 import { getPage1, getPage2, getPage3 } from "@/api/api";
 import { message } from "antd";
-import { page3Data, page2Data, page1Data } from "@/test/form";
 
 function App() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [deviceList, setDeviceList] = useState([]);
   const [runRate, setRunRate] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
@@ -40,33 +39,26 @@ function App() {
   }
   function page1() {
     getPage1()
-      .then((res) => {})
-      .finally(() => {
-        const res = page1Data
+      .then((res) => {
         if (res && res["deviceList"] && res["runRate"]) {
           setDeviceList(res.deviceList);
           setRunRate(res.runRate);
         } else {
           Toast.error("数据获取失败");
         }
-      });
+      })
+      .finally(() => {});
   }
   function page2() {
-    getPage2()
-      .then((res) => {})
-      .finally(() => {
-        const param = page2Data
-        setListData1(param);
-      });
+    getPage2().then((res) => {
+      setListData1(res);
+    });
   }
 
   function page3() {
-    getPage3()
-      .then((res) => {})
-      .finally(() => {
-        let param = page3Data
-        setListData2(param);
-      });
+    getPage3().then((res) => {
+      setListData2(res);
+    });
   }
   function initInterval() {
     useInterval(() => {
@@ -89,7 +81,7 @@ function App() {
     }, 10000);
   }
   useEffect(() => {
-    page1();
+    page2();
   }, []);
 
   initInterval();
