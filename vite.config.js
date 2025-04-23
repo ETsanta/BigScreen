@@ -21,6 +21,7 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
       }
     },
     server: {
+      host: '0.0.0.0',
       proxy: {
         '/api': {
           target: env.VITE_API_URL,

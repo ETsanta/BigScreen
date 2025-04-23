@@ -2,6 +2,7 @@ import React from 'react';
 import '@/css/Progress.less';
 
 const ProgressBar = ({ percentage, context="" }) => {
+    
     return (
         <div className="progress-bar-container">
             <div className="progress-bar" style={{ width: `${percentage}%` }}>

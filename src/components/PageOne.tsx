@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import DeviceList from "@/components/DeviceList";
 
-const pageOne = () => {
+const pageOne = ({ listData = [] }) => {
+    listData
     return (
         <>
             <div className="dev-list">
@@ -12,12 +13,10 @@ const pageOne = () => {
                         justifyContent: "space-evenly",
                     }}
                 >
-                    <DeviceList />
-                    <DeviceList />
-                    <DeviceList />
-                    <DeviceList />
-                    <DeviceList />
-                    <DeviceList />
+
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <DeviceList key={index} Data={listData[index]} />
+                    ))}
                 </div>
                 <div
                     style={{
@@ -26,11 +25,9 @@ const pageOne = () => {
                         justifyContent: "space-evenly",
                     }}
                 >
-                    <DeviceList />
-                    <DeviceList />
-                    <DeviceList />
-                    <DeviceList />
-                    <DeviceList />
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <DeviceList key={6 + index} Data={listData[6 + index]} />
+                    ))}
                 </div>
             </div>
         </>

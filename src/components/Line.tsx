@@ -3,15 +3,29 @@ import useECharts from "@/unitls/useEcharts";
 import { cloneDeep } from "lodash-es";
 
 
+interface DeviceContext {
+  axis: string[];
+  data: number[][];
+}
+interface Device {
+  name: string;
+  list: DeviceContext[];
+  time: string[];
+}
+
 const BarChartComponent = ({
   option = {},
-  chartData = {},
+  chartData = {
+    name: "",
+    list: [],
+    time: [],
+  },
   height = "87vh",
   width = "100vw",
-}) => {
+}: { option?: any, chartData: Device, height?: string, width?: string }) => {
   const containerRef = useRef(null);
   const colorList = ["#0060b9", "#00dcd3", "#ffffff", "#01bf74", "#f3229f", "#e2f917", "#d701e3", "#ef6815"];
-  const [options] = useState({
+  const [options, setOption] = useState({
     title: {
       text: "",
       left: 0,
@@ -41,8 +55,12 @@ const BarChartComponent = ({
     legend: {
       data: [],
       icon: 'circle',
+      itemWidth: 5,
+      itemHeight: 5,
+      left: 50,
       textStyle: {
         color: '#C6D1DB',
+        fontSize: 10,
       },
 
       show: true,
@@ -83,31 +101,90 @@ const BarChartComponent = ({
     if (option) {
       Object.assign(options, cloneDeep(option));
     }
-    // {
-    //   data: [],
-    //   name: "振动X",
-    //   type: "line",
-    //   smooth: true,
-    //   showSymbol: false,
-    //   color: colorList[0],
-    //   lineStyle: {
-    //     color: colorList[0],
-    //     width: 2,
-    //   },
-    // }
 
-    
-    // if (chartData) {
-    //   options.xAxis.data = chartData.time;
-    //   options.series[0].data = chartData.vibrate;
-    //   options.series[1].data = chartData.electricity;
-    //   options.series[2].data = chartData.temperature;
-    // }
-    // setOptions(options);
+    let seriesParam = []
+    let flag = 0
+    let legend = []
+    for (let i = 0; i < chartData.list.length; i++) {
+      const element = chartData.list[i];
+      for (let j = 0; j < element.axis.length; j++) {
+        const childName = element.axis[j];
+        const childData = element.data[j];
+        legend.push(element.name + "-" + childName);
+        let param = {
+          data: childData,
+          name: element.name + "-" + childName,
+          type: "line",
+          smooth: true,
+          showSymbol: false,
+          color: colorList[flag],
+          markPoint: {
+            showSymbol: true,
+            symbolSize: 0,
+            symbol: "circle",
+            symbolOffset: [0, 0],
+            label: {
+              borderRadius: 200,
+              distance: 1,
+              formatter: [
+                '    {d|●}',
+                ' {a|{c}}',
+                '    {b|}'
+              ].join(''),
+              rich: {
+                d: {
+                  color: 'inherit',
+                },
+                a: {
+                  color: '#fff',
+                  align: 'center',
+                },
+              }
+
+            },
+
+            data: [
+              {
+                type: 'max',
+                name: '最大值',
+              },
+            ],
+          },
+          lineStyle: {
+            color: colorList[flag],
+            width: 2,
+          },
+        }
+        flag++
+        seriesParam.push(param);
+      }
+
+    }
+    setOption(prev => ({
+      ...prev,
+      title: {
+        ...prev.title,
+        text: chartData.name  // 修改 title.text
+      },
+      legend: {
+        ...prev.legend,
+        data: legend // 修改 legend.data
+      },
+      xAxis: {
+        ...prev.xAxis,
+        data: chartData.time // 修改 xAxis.data
+      },
+      series: seriesParam
+    }));
+
   }
   useEffect(() => {
     initChart();
-  }, [chartData, height, width, option]);
+  }, [chartData, height, width]);
+
+  useEffect(() => {
+    setOptions(options);
+  }, [options]);
   return <div ref={containerRef} style={{ width: width, height: height }} />;
 };
 

@@ -5,24 +5,29 @@ import classNames from 'classnames';
 import styles from "@/css/AlertLight.module.less";
 import StatusDot from "@/components/Status";
 
+interface SensorStatusItem {
+    name: string;
+    status: 0 | 1; // 0表示关，1表示开
+}
 
-const DeviceList = ( { Data={} } ) => {
+interface Device {
+    name: string;
+    status: 0 | 1; // 0表示关，1表示开
+    runTime: string;
+    sensorStatus: SensorStatusItem[];
+}
+const DeviceList = ({ Data = {
+    name: "",
+    status: 0, // 0是关 1是开
+    runTime: "", //单位小时 || 分钟，
+    sensorStatus: [
+    ],
+}, }: {
+    Data: Device
+}) => {
     const scale = 0.8;
     const [width, setWidth] = useState(1);
     const [height, setHeight] = useState(0);
-    const [tableData, setTableData] = useState({
-        percent: 50,
-        runTime: 500,
-        lights: [{
-            name: "温度",
-            status: 1,
-        }, {
-            name: "振动",
-            status: 0,
-        }],
-        name: "冲呀1",
-        checked: 1
-    })
 
     const AlertLight = ({ status = 0, size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
         return (
@@ -71,8 +76,8 @@ const DeviceList = ( { Data={} } ) => {
     return (
         <>
             <div className="device-list">
-                <div className="device-name">{tableData.name}</div>
-                <img src={DeviceImg} alt={tableData.name} width={width + 'px'} height={height + 'px'} />
+                <div className="device-name">{Data.name}</div>
+                <img src={DeviceImg} alt={Data.name} width={width + 'px'} height={height + 'px'} />
                 <div className="run-bar">
                     <div style={{
                         gap: "0.5vw",
@@ -82,13 +87,13 @@ const DeviceList = ( { Data={} } ) => {
                         alignItems: "center"
                     }}>
                         <span className="device-item">运行状态</span>
-                        <StatusDot status={tableData.checked == 0}></StatusDot>
+                        <StatusDot status={Data.status == 0}></StatusDot>
                     </div>
                 </div>
-                <div className="device-runTime"><span className="device-item">运行时间</span><span className="device-runTime-time">{tableData.runTime}min</span></div>
+                <div className="device-runTime"><span className="device-item">运行时间</span><span className="device-runTime-time">{Data.runTime}min</span></div>
                 <div className="sensor-list">
                     {
-                        tableData.lights.map((item, index) => <WarnLight key={index} name={item.name} status={item.status} />)
+                        Data.sensorStatus.map((item, index) => <WarnLight key={index} name={item.name} status={item.status} />)
                     }
                 </div>
             </div >
