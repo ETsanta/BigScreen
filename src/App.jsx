@@ -11,7 +11,7 @@ import { getPage1, getPage2, getPage3 } from "@/api/api";
 import { message } from "antd";
 
 function App() {
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [deviceList, setDeviceList] = useState([]);
   const [runRate, setRunRate] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
@@ -81,7 +81,7 @@ function App() {
     }, 10000);
   }
   useEffect(() => {
-    page2();
+    page1();
   }, []);
 
   initInterval();

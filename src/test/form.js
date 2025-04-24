@@ -2,7 +2,28 @@ export const page1Data = {
     deviceList: [
         {
             name: "设备1",
+            type:1, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             status: 1, // 0是关 1是开
+            runTime: "10", //单位小时 || 分钟，
+            sensorStatus: [
+                {
+                    name: "温振1",
+                    status: 1, // 0是开 1是关
+                },
+                {
+                    name: "温振2",
+                    status: 1, // 0是开 1是关
+                },
+                {
+                    name: "电流",
+                    status: 1, // 0是开 1是关
+                },
+            ],
+        },
+        {
+            name: "设备2",
+            status: 1, // 0是关 1是开
+            type:1, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             runTime: "500", //单位小时 || 分钟，
             sensorStatus: [
                 {
@@ -22,6 +43,7 @@ export const page1Data = {
         {
             name: "设备2",
             status: 1, // 0是关 1是开
+            type:0, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             runTime: "500", //单位小时 || 分钟，
             sensorStatus: [
                 {
@@ -41,11 +63,12 @@ export const page1Data = {
         {
             name: "设备2",
             status: 1, // 0是关 1是开
+            type:0, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             runTime: "500", //单位小时 || 分钟，
             sensorStatus: [
                 {
                     name: "温振1",
-                    status: 1, // 0是开 1是关
+                    status: 0, // 0是开 1是关
                 },
                 {
                     name: "温振2",
@@ -60,25 +83,7 @@ export const page1Data = {
         {
             name: "设备2",
             status: 1, // 0是关 1是开
-            runTime: "500", //单位小时 || 分钟，
-            sensorStatus: [
-                {
-                    name: "温振1",
-                    status: 1, // 0是开 1是关
-                },
-                {
-                    name: "温振2",
-                    status: 1, // 0是开 1是关
-                },
-                {
-                    name: "电流",
-                    status: 1, // 0是开 1是关
-                },
-            ],
-        },
-        {
-            name: "设备2",
-            status: 1, // 0是关 1是开
+            type:0, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             runTime: "500", //单位小时 || 分钟，
             sensorStatus: [
                 {
@@ -98,6 +103,7 @@ export const page1Data = {
         {
             name: "设备6",
             status: 1, // 0是关 1是开
+            type:0, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             runTime: "500", //单位小时 || 分钟，
             sensorStatus: [
                 {
@@ -117,6 +123,7 @@ export const page1Data = {
         {
             name: "设备2",
             status: 1, // 0是关 1是开
+            type:0, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             runTime: "500", //单位小时 || 分钟，
             sensorStatus: [
                 {
@@ -136,11 +143,12 @@ export const page1Data = {
         {
             name: "设备8",
             status: 1, // 0是关 1是开
+            type:2, ///设备类型 0冲压机、1空鸭鸡、2 涂料泵
             runTime: "500", //单位小时 || 分钟，
             sensorStatus: [
                 {
                     name: "温振1",
-                    status: 1, // 0是开 1是关
+                    status: 0, // 0是开 1是关
                 },
                 {
                     name: "温振2",

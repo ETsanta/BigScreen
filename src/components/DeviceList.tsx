@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import DeviceImg from "@/assets/images/device.png"
+import D2 from "@/assets/images/D2.png"
+import D3 from "@/assets/images/D3.png"
 import "@/css/DeviceList.less"
 import classNames from 'classnames';
 import styles from "@/css/AlertLight.module.less";
@@ -12,12 +14,14 @@ interface SensorStatusItem {
 
 interface Device {
     name: string;
+    type: string;
     status: 0 | 1; // 0表示关，1表示开
     runTime: string;
     sensorStatus: SensorStatusItem[];
 }
 const DeviceList = ({ Data = {
     name: "",
+    type: "0",
     status: 0, // 0是关 1是开
     runTime: "", //单位小时 || 分钟，
     sensorStatus: [
@@ -77,7 +81,11 @@ const DeviceList = ({ Data = {
         <>
             <div className="device-list">
                 <div className="device-name">{Data.name}</div>
-                <img src={DeviceImg} alt={Data.name} width={width + 'px'} height={height + 'px'} />
+                {Data.type == "1" ? <img src={DeviceImg} alt={Data.name} width={width + 'px'} height={height + 'px'} />
+                 : Data.type == "2" ?
+                  <img src={D2} alt={Data.name} width={width + 'px'} height={height + 'px'} /> :  <img src={D3} alt={Data.name} width={width + 'px'} height={height + 'px'} />
+
+                }
                 <div className="run-bar">
                     <div style={{
                         gap: "0.5vw",
