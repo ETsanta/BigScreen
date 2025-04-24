@@ -78,13 +78,13 @@ function App() {
           messageApi.error("系统异常");
           break;
       }
-    }, 10000);
+    }, 15000);
   }
   useEffect(() => {
     page1();
   }, []);
 
-  // initInterval();
+  initInterval();
 
   return (
     <>

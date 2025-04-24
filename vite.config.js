@@ -21,6 +21,7 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
       }
     },
     server: {
+      port: Number(env.VITE_PORT) || 3888,
       host: '0.0.0.0',
       proxy: {
         '/api': {
