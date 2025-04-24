@@ -84,7 +84,7 @@ function App() {
     page1();
   }, []);
 
-  initInterval();
+  // initInterval();
 
   return (
     <>

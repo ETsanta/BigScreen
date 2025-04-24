@@ -276,8 +276,7 @@ const ImageMarker: React.FC<ImageMarkerProps> = ({
     >
       <canvas ref={canvasRef} />
 
-      {/* 智能悬浮窗 */}
-      {tooltip && hoverPoint && (
+      {tooltip && hoverPoint && hoverPoint.data && Object.keys(hoverPoint.data).length && (
         <div
           ref={tooltipRef}
           style={{
@@ -285,13 +284,12 @@ const ImageMarker: React.FC<ImageMarkerProps> = ({
             left: tooltipPos.x,
             top: tooltipPos.y,
             backgroundColor: 'white',
-            padding: '12px',
             borderRadius: '8px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
             pointerEvents: 'none',
             zIndex: 1000,
             transition: 'all 0.2s ease',
-            // 动态箭头
+            
             '&::after': {
               content: '""',
               position: 'absolute',

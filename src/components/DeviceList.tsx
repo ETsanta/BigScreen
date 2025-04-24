@@ -6,6 +6,9 @@ import "@/css/DeviceList.less"
 import classNames from 'classnames';
 import styles from "@/css/AlertLight.module.less";
 import StatusDot from "@/components/Status";
+import ImageMarker from "@/components/Points";
+import { use } from "react";
+
 
 interface SensorStatusItem {
     name: string;
@@ -32,6 +35,21 @@ const DeviceList = ({ Data = {
     const scale = 0.8;
     const [width, setWidth] = useState(1);
     const [height, setHeight] = useState(0);
+    const [points1, setPoints1] = useState([
+        { x: 800, y: 350, color: '', code: "温振1" },
+        { x: 300, y: 600, color: '', code: "温振2" },
+        { x: 600, y: 700, color: '', code: "电流" },
+    ]);
+    const [points2, setPoints2] = useState([
+        { x: 800, y: 200, color: '', code: "温振1" },
+        { x: 300, y: 400, color: '', code: "温振2" },
+        { x: 1000, y: 700, color: '', code: "电流" },
+    ]);
+    const [points3, setPoints3] = useState([
+        { x: 800, y: 500, color: '', code: "温振1" },
+        { x: 300, y: 600, color: '', code: "温振2" },
+        { x: 650, y: 1200, color: '', code: "电流" },
+    ]);
 
     const AlertLight = ({ status = 0, size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
         return (
@@ -71,9 +89,52 @@ const DeviceList = ({ Data = {
     function handleResize() {
         convertVhToPx()
     }
-
+    function handlePoints() {
+        let param = []
+        Data.sensorStatus.map((item, index) => {
+            switch (Data.type) {
+                case "0":
+                    points1.map((itemChild, index) => {
+                        if (itemChild.code == item.name) {
+                            points1[index].color = item.status == 0 ? '#05e348' : '#e20202'
+                            param.push(points1[index])
+                        } else {
+                            param.push(itemChild)
+                        }
+                    })
+                    setPoints1(param)
+                    break;
+                case "1":
+                    points2.map((itemChild, index) => {
+                        if (itemChild.code == item.name) {
+                            points2[index].color = item.status == 0 ? '#05e348' : '#e20202'
+                            param.push(points2[index])
+                        } else {
+                            param.push(itemChild)
+                        }
+                    })
+                    setPoints2(param)
+                    break;
+                case "2":
+                    points3.map((itemChild, index) => {
+                        if (itemChild.code == item.name) {
+                            points3[index].color = item.status == 0 ? '#05e348' : '#e20202'
+                            param.push(points3[index])
+                        } else {
+                            param.push(itemChild)
+                        }
+                    })
+                    setPoints3(param)
+                    break;
+                default:
+                    break;
+            }
+        })
+    }
     window.addEventListener('resize', handleResize);
-
+    useEffect(() => {
+        handlePoints()
+    }, [Data])
     useEffect(() => {
         convertVhToPx();
     }, []);
@@ -81,11 +142,20 @@ const DeviceList = ({ Data = {
         <>
             <div className="device-list">
                 <div className="device-name">{Data.name}</div>
-                {Data.type == "1" ? <img src={DeviceImg} alt={Data.name} width={width + 'px'} height={height + 'px'} />
-                 : Data.type == "2" ?
-                  <img src={D2} alt={Data.name} width={width + 'px'} height={height + 'px'} /> :  <img src={D3} alt={Data.name} width={width + 'px'} height={height + 'px'} />
-
-                }
+                <div style={{ width: width + 'px', height: height + 'px' }}>
+                    {/* <img src={D2} alt={Data.name} width={width + 'px'} height={height + 'px'} /> : <img src={D3} alt={Data.name} width={width + 'px'} height={height + 'px'} /> */}
+                    <ImageMarker
+                        image={Data.type == "0" ? DeviceImg : Data.type == "1" ? D2 : D3}
+                        points={Data.type == "0" ? points1 : Data.type == "1" ? points2 : points3}
+                        tooltip={(point) => (
+                            <div style={{ maxWidth: 200, color: point.color }}>
+                                <h2 style={{ color: point.color }}>{point.data.name}</h2>
+                                <p>状态：({point.data.state == 1 ? '在线' : '离线'})</p>
+                                <p>坐标：({point.x}, {point.y})</p>
+                            </div>
+                        )}
+                    />
+                </div>
                 <div className="run-bar">
                     <div style={{
                         gap: "0.5vw",
