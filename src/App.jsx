@@ -10,8 +10,9 @@ import PageThree from "@/components/PageThree";
 import { getPage1, getPage2, getPage3 } from "@/api/api";
 import { message } from "antd";
 
+
 function App() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [deviceList, setDeviceList] = useState([]);
   const [runRate, setRunRate] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
@@ -40,24 +41,29 @@ function App() {
   function page1() {
     getPage1()
       .then((res) => {
-        if (res && res["deviceList"] && res["runRate"]) {
-          setDeviceList(res.deviceList);
-          setRunRate(res.runRate);
+        if (res.data && res.data["device_list"] && res.data["run_rate"]) {
+          setDeviceList(res.data.device_list);
+          setRunRate(res.data.run_rate);
         } else {
           Toast.error("数据获取失败");
         }
       })
       .finally(() => {});
   }
+  // 定义一个名为 page2 的函数
   function page2() {
+    // 调用 getPage2 函数，该函数返回一个 Promise 对象
     getPage2().then((res) => {
-      setListData1(res);
+      // 当 Promise 对象成功解析时，执行回调函数
+      // 回调函数接收一个参数 res，代表从 getPage2 返回的响应数据
+      // 将响应数据中的 data 属性赋值给 setListData1 函数，更新组件的状态
+      setListData1(res.data);
     });
   }
 
   function page3() {
     getPage3().then((res) => {
-      setListData2(res);
+      setListData2(res.data);
     });
   }
   function initInterval() {
@@ -81,10 +87,10 @@ function App() {
     }, 15000);
   }
   useEffect(() => {
-    page1();
+    page2();
   }, []);
 
-  initInterval();
+  // initInterval();
 
   return (
     <>
