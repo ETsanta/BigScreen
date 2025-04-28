@@ -2,21 +2,22 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import process from 'process'
+import { configHtmlPlugin } from "./lib/html"
+import { wrapperEnv } from "./lib/utils"
 
 
-function pathResolve(dir) {
-  return path.resolve(process.cwd(), '.', dir);
-}
-// https://vite.dev/config/
+
 export default defineConfig(({ mode, command, ssrBuild }) => {
   const env = loadEnv(mode, process.cwd());
+  const viteEnv = wrapperEnv(env);
+  const isBuild = command === 'build';
+  // const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv;
   return {
-    plugins: [react()],
+    plugins: [react(),
+    configHtmlPlugin(viteEnv, isBuild)],
     resolve: {
       alias: {
-        // 推荐使用更简洁的配置方式
         '@': path.resolve(__dirname, 'src'),
-        // 如果需要二级别名
         '@components': path.resolve(__dirname, 'src/components')
       }
     },
@@ -24,11 +25,12 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
       port: Number(env.VITE_PORT) || 3888,
       host: '0.0.0.0',
       proxy: {
-        '/api': {
+        '/gm': {
           target: env.VITE_API_URL,
-          changeOrigin: true
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/gm/, '')
         }
       }
-    }
+    },
   }
 })
