@@ -7,27 +7,31 @@ import classNames from 'classnames';
 import styles from "@/css/AlertLight.module.less";
 import StatusDot from "@/components/Status";
 import ImageMarker from "@/components/Points";
-import { use } from "react";
 
 
 interface SensorStatusItem {
-    name: string;
-    status: 0 | 1; // 0表示关，1表示开
+    sensor_sn: string;
+    sensor_runstate: 0 | 1; // 0表示关，1表示开
 }
 
 interface Device {
-    name: string;
-    type: string;
-    status: 0 | 1; // 0表示关，1表示开
-    runTime: string;
-    sensorStatus: SensorStatusItem[];
+    device_name: string;
+    device_type: string;
+    device_runstate: 0 | 1; // 0表示关，1表示开
+    device_runtime: string;
+    sensor_list?: SensorStatusItem[];
+    temp_sensor_infos?: SensorStatusItem[];
+    elec_sensor_infos?: SensorStatusItem[];
 }
 const DeviceList = ({ Data = {
-    name: "",
-    type: "0",
-    status: 0, // 0是关 1是开
-    runTime: "", //单位小时 || 分钟，
-    sensorStatus: [
+    device_name: "",
+    device_type: "0",
+    sensor_list: [],
+    device_runstate: 0, // 0是关 1是开
+    device_runtime: "", //单位小时 || 分钟，
+    temp_sensor_infos: [
+    ],
+    elec_sensor_infos: [
     ],
 }, }: {
     Data: Device
@@ -51,11 +55,11 @@ const DeviceList = ({ Data = {
         { x: 650, y: 1200, color: '', code: "电流" },
     ]);
 
-    const AlertLight = ({ status = 0, size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
+    const AlertLight = ({ status = "0", size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
         return (
             <div
                 className={classNames(styles.light, {
-                    [styles.alert]: status === 1,  // 当 status=1 时添加 alert 类名
+                    [styles.alert]: status === "1",  // 当 status=1 时添加 alert 类名
                 })}
                 style={{
                     '--light-size': `${size}vw`,     // 动态控制尺寸
@@ -66,7 +70,7 @@ const DeviceList = ({ Data = {
         );
     };
 
-    const WarnLight = ({ name = "", status = 0, }) => {
+    const WarnLight = ({ name = "", status = "0", }) => {
         return (
             <>
                 <div className="device-warnLight">
@@ -91,12 +95,12 @@ const DeviceList = ({ Data = {
     }
     function handlePoints() {
         let param = []
-        Data.sensorStatus.map((item, index) => {
-            switch (Data.type) {
+        Data.temp_sensor_infos.map((item, index) => {
+            switch (Data.device_type) {
                 case "0":
                     points1.map((itemChild, index) => {
-                        if (itemChild.code == item.name) {
-                            points1[index].color = item.status == 0 ? '#05e348' : '#e20202'
+                        if (itemChild.code == item.sensor_sn) {
+                            points1[index].color = item.sensor_runstate == 0 ? '#05e348' : '#e20202'
                             param.push(points1[index])
                         } else {
                             param.push(itemChild)
@@ -106,8 +110,8 @@ const DeviceList = ({ Data = {
                     break;
                 case "1":
                     points2.map((itemChild, index) => {
-                        if (itemChild.code == item.name) {
-                            points2[index].color = item.status == 0 ? '#05e348' : '#e20202'
+                        if (itemChild.code == item.sensor_sn) {
+                            points2[index].color = item.sensor_runstate == 0 ? '#05e348' : '#e20202'
                             param.push(points2[index])
                         } else {
                             param.push(itemChild)
@@ -117,8 +121,8 @@ const DeviceList = ({ Data = {
                     break;
                 case "2":
                     points3.map((itemChild, index) => {
-                        if (itemChild.code == item.name) {
-                            points3[index].color = item.status == 0 ? '#05e348' : '#e20202'
+                        if (itemChild.code == item.sensor_sn) {
+                            points3[index].color = item.sensor_runstate == 0 ? '#05e348' : '#e20202'
                             param.push(points3[index])
                         } else {
                             param.push(itemChild)
@@ -131,8 +135,17 @@ const DeviceList = ({ Data = {
             }
         })
     }
+    function comboSensor() {
+        if (Data["temp_sensor_infos"] && Data["elec_sensor_infos"]) {
+            Data["sensor_list"] = [...Data.temp_sensor_infos, ...Data.elec_sensor_infos]
+        } else {
+            Data["sensor_list"] = Data["temp_sensor_infos"] ? Data.temp_sensor_infos : Data["elec_sensor_infos"] ? Data.elec_sensor_infos : [];
+        }
+
+    }
     window.addEventListener('resize', handleResize);
     useEffect(() => {
+        comboSensor()
         handlePoints()
     }, [Data])
     useEffect(() => {
@@ -141,12 +154,12 @@ const DeviceList = ({ Data = {
     return (
         <>
             <div className="device-list">
-                <div className="device-name">{Data.name}</div>
+                <div className="device-name">{Data.device_name}</div>
                 <div style={{ width: width + 'px', height: height + 'px' }}>
-                    {/* <img src={D2} alt={Data.name} width={width + 'px'} height={height + 'px'} /> : <img src={D3} alt={Data.name} width={width + 'px'} height={height + 'px'} /> */}
-                    <ImageMarker
-                        image={Data.type == "0" ? DeviceImg : Data.type == "1" ? D2 : D3}
-                        points={Data.type == "0" ? points1 : Data.type == "1" ? points2 : points3}
+                    {Data.device_type == '0' ? <img src={DeviceImg} alt={Data.device_name} width={width + 'px'} height={height + 'px'} /> : Data.device_type == '1' ? <img src={D2} alt={Data.device_name} width={width + 'px'} height={height + 'px'} /> : <img src={D3} alt={Data.device_name} width={width + 'px'} height={height + 'px'} />}
+                    {/* <ImageMarker
+                        image={Data.device_type == "0" ? DeviceImg : Data.device_type == "1" ? D2 : D3}
+                        points={Data.device_type == "0" ? points1 : Data.device_type == "1" ? points2 : points3}
                         tooltip={(point) => (
                             <div style={{ maxWidth: 200, color: point.color }}>
                                 <h2 style={{ color: point.color }}>{point.data.name}</h2>
@@ -154,7 +167,7 @@ const DeviceList = ({ Data = {
                                 <p>坐标：({point.x}, {point.y})</p>
                             </div>
                         )}
-                    />
+                    /> */}
                 </div>
                 <div className="run-bar">
                     <div style={{
@@ -165,13 +178,13 @@ const DeviceList = ({ Data = {
                         alignItems: "center"
                     }}>
                         <span className="device-item">运行状态</span>
-                        <StatusDot status={Data.status == 0}></StatusDot>
+                        <StatusDot status={Data.device_type == "0"}></StatusDot>
                     </div>
                 </div>
-                <div className="device-runTime"><span className="device-item">运行时间</span><span className="device-runTime-time">{Data.runTime}min</span></div>
+                <div className="device-runTime"><span className="device-item">运行时间</span><span className="device-runTime-time">{Data.device_runtime}</span></div>
                 <div className="sensor-list">
                     {
-                        Data.sensorStatus.map((item, index) => <WarnLight key={index} name={item.name} status={item.status} />)
+                        Data.sensor_list && Data.sensor_list.map((item, index) => <WarnLight key={index} name={item.sensor_sn} status={item.sensor_runstate} />)
                     }
                 </div>
             </div >

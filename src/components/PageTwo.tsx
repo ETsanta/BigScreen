@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Line from "@/components/Line";
-import { random } from "lodash";
 
 
 interface DeviceContext {
@@ -14,12 +13,6 @@ interface Device {
   time: string[];
 }
 const pageTwo = ({ ListData = [] }: { ListData: Device[] }) => {
-  const [ChartData, setChartData] = useState({
-    vibrate: [11, 1, 2, 22, 3, 15],
-    electricity: [1, 12, 22, 3, 24, 35],
-    temperature: [1, 11, 42, 23, 14, 15],
-    time: ["09:10", "10:10", "11:10", "12:10", "13:10", "14:10"],
-  });
   return (
     <>
       <div className="dev-list">
