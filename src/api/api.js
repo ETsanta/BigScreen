@@ -1,10 +1,10 @@
-import { get, post } from '@/unitls/request/index';
+import { get, post } from '@/uitls/request/index';
 import { page3Data, page2Data, page1Data } from "@/test/form";
 
 const Api = {
-    page1: "/largeScreen/getDeviceListDatas",
-    page2: "/largeScreen/getTempVibraSensorListDatas",
-    page3: "/largeScreen/getElectricitySensorListDatas"
+    page1: "/gm/largeScreen/getDeviceListDatas",
+    page2: "/gm/largeScreen/getTempVibraSensorListDatas",
+    page3: "/gm/largeScreen/getElectricitySensorListDatas"
 }
 
 export const getPage1 = () => {

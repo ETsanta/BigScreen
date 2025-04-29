@@ -11,7 +11,7 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
   const env = loadEnv(mode, process.cwd());
   const viteEnv = wrapperEnv(env);
   const isBuild = command === 'build';
-  // const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv;
+  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE, VITE_API_URL } = viteEnv;
   return {
     plugins: [react(),
     configHtmlPlugin(viteEnv, isBuild)],
@@ -22,11 +22,11 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
       }
     },
     server: {
-      port: Number(env.VITE_PORT) || 3888,
+      port: Number(VITE_PORT) || 3888,
       host: '0.0.0.0',
       proxy: {
         '/gm': {
-          target: env.VITE_API_URL,
+          target: VITE_API_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/gm/, '')
         }

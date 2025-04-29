@@ -1,6 +1,6 @@
 import { useEffect, useRef, MutableRefObject } from 'react';
 import * as echarts from 'echarts';
-import { nextTick } from '@/unitls/nextTick';
+import { nextTick } from '@/uitls/nextTick';
 
 
 const useECharts = ({

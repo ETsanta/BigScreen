@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import useECharts from "@/unitls/useEcharts";
+import useECharts from "@/uitls/useEcharts";
 import { cloneDeep } from "lodash-es";
 import { useDeepCompareEffect } from 'ahooks'; 
 

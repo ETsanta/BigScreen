@@ -1,13 +1,13 @@
 // src/utils/http.js
 import axios from 'axios';
 import { message } from 'antd';
-import { getEnv } from "@/unitls/env"
+import { getAppEnvConfig } from "@/uitls/env"
 
-
+const { VITE_API_URL } = getAppEnvConfig();
 
 // 创建 axios 实例
 const http = axios.create({
-  baseURL: getEnv("VITE_API_URL"),
+  baseURL: VITE_API_URL,
   timeout: 10000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'

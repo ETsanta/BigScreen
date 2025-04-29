@@ -5,7 +5,9 @@ export const runBuild = async () => {
   try {
     const argvList = process.argv.splice(2);
 
-    runBuildConfig();
+    if (!argvList.includes('disabled-config')) {
+      runBuildConfig();
+    }
 
   } catch (error) {
     console.log(colors.red('vite build error:\n' + error));
