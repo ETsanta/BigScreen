@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import useECharts from "@/uitls/useEcharts";
 import { cloneDeep } from "lodash-es";
-import { useDeepCompareEffect } from 'ahooks'; 
+import { useDeepCompareEffect } from 'ahooks';
 
 
 interface DeviceContext {
@@ -12,6 +12,17 @@ interface Device {
   name: string;
   list: DeviceContext[];
   time: string[];
+}
+function parseTime(timeStr) {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  console.log(hours, minutes);
+  
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const day = today.getDate();
+  console.log(year, month, day, hours, minutes);
+  return new Date(year, month, day, hours, minutes);
 }
 
 const BarChartComponent = ({
@@ -40,16 +51,19 @@ const BarChartComponent = ({
       type: "category",
       boundaryGap: false,
       data: [],
+      axisLabel: {
+        formatter: function (value) {
+          return new Date(Number(value)).getHours() + ":" + new Date(Number(value)).getMinutes()
+        }
+      },
       axisLine: {
         symbol: 'none',
         lineStyle: {
           color: '#B4C0CC',
         },
       },
-      axisTick: {
-        show: false,
-      },
     },
+
     tooltip: {
       trigger: 'axis',
     },
@@ -167,7 +181,7 @@ const BarChartComponent = ({
       // 更新配置项
       newOptions.title.text = chartData.name;
       newOptions.legend.data = legend;
-      newOptions.xAxis.data = chartData.time;
+      newOptions.xAxis.data = chartData.list[0]?.time
       newOptions.series = seriesParam;
 
       return newOptions;
