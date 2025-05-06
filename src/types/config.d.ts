@@ -8,4 +8,5 @@ export interface GlobEnvConfig {
     VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE: boolean;
     VITE_BUILD_COMPRESS: string;
     VITE_PUBLIC_PATH: string;
+    VITE_APP_SHORT_NAME: string;
 }

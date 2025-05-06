@@ -13,26 +13,23 @@ export function configHtmlPlugin(env, isBuild: boolean) {
         return `${path || '/'}${GLOB_CONFIG_FILE_NAME}?v=${pkg.version}-${new Date().getTime()}`;
     };
 
-    const htmlPlugin = () =>{
-        // if(isBuild) {
-        //     return createHtmlPlugin({
-        //         minify: true,
-        //         inject: {
-        //             data: {
-        //                 title: VITE_APP_TITLE,
-        //             },
-        //             tags: [
-        //                 {
-        //                     tag: 'script',
-        //                     attrs: {
-        //                         src: getAppConfigSrc(),
-        //                     },
-        //                 },
-        //             ],
-        //         },
-        //     });
-        // }
-        getAppConfigSrc()
-    }
+    const htmlPlugin = createHtmlPlugin({
+        minify: isBuild,
+        inject: {
+            data: {
+                title: VITE_APP_TITLE,
+            },
+            tags: isBuild
+                ? [
+                    {
+                        tag: 'script',
+                        attrs: {
+                            src: getAppConfigSrc(),
+                        },
+                    },
+                ]
+                : [],
+        },
+    });
     return htmlPlugin;
 }

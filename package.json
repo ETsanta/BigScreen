@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --mode production && esno ./lib/runbuild.ts",
+    "build:dev": "vite build --mode development",
+    "build:staging": "vite build --mode staging && esno ./lib/runbuild.ts",
+    "build:prod": "vite build --mode production && esno ./lib/runbuild.ts",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -23,11 +25,9 @@
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "picocolors": "^1.1.1",
-    "process": "^0.11.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "require": "^2.4.20",
-    "vite-plugin-html": "3.2.0"
+    "vite-plugin-html": "^3.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
@@ -45,11 +45,6 @@
   },
   "presets": [
     "@babel/preset-react",
-    [
-      "@babel/preset-react",
-      {
-        "runtime": "automatic"
-      }
-    ]
+    ["@babel/preset-react", { "runtime": "automatic" }]
   ]
 }
