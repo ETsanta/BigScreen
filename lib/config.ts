@@ -2,10 +2,10 @@
  * Generate additional configuration files when used for packaging. The file can be configured with some global variables, so that it can be changed directly externally without repackaging
  */
 import { GLOB_CONFIG_FILE_NAME, OUTPUT_DIR } from './constant';
-import fs from 'fs-extra';
 import colors from 'picocolors';
 import { getEnvConfig, getRootPath } from './utils';
 import pkg from '../package.json';
+// import { mkdirp, writeFile } from "fs-extra";
 
 interface CreateConfigParams {
   configName: string;
@@ -13,11 +13,10 @@ interface CreateConfigParams {
   configFileName?: string;
 }
 
-function createConfig(params: CreateConfigParams) {
+async function createConfig(params: CreateConfigParams) {
   const { configName, config, configFileName } = params;
   try {
     const windowConf = `window.${configName}`;
-    // Ensure that the variable will not be modified
     let configStr = `${windowConf}=${JSON.stringify(config)};`;
     configStr += `
       Object.freeze(${windowConf});
@@ -26,9 +25,9 @@ function createConfig(params: CreateConfigParams) {
         writable: false,
       });
     `.replace(/\s/g, '');
-
-    fs.mkdirp(getRootPath(OUTPUT_DIR));
-    fs.writeFile(getRootPath(`${OUTPUT_DIR}/${configFileName}`), configStr);
+    const { mkdirp, writeFile } = await import('fs-extra');
+    mkdirp(getRootPath(OUTPUT_DIR));
+    writeFile(getRootPath(`${OUTPUT_DIR}/${configFileName}`), configStr);
 
     console.log(colors.cyan(`✨ [${pkg.name}]`) + ` - configuration file is build successfully:`);
     console.log(colors.gray(OUTPUT_DIR + '/' + colors.green(configFileName)) + '\n');
@@ -36,7 +35,6 @@ function createConfig(params: CreateConfigParams) {
     console.log(colors.red('configuration file configuration file failed to package:\n' + error));
   }
 }
-
 
 export const getConfigFileName = (env: Record<string, any>) => {
   return `__PRODUCTION__${env.VITE_APP_SHORT_NAME || '__APP'}__CONF__`.toUpperCase().replace(/\s/g, '');

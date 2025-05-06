@@ -11,6 +11,7 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
   const env = loadEnv(mode, process.cwd());
   const viteEnv = wrapperEnv(env);
   const isBuild = command === 'build';
+  console.log("######",isBuild);
   const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE, VITE_API_URL } = viteEnv;
   return {
     plugins: [react(),
