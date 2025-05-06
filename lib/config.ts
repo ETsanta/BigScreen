@@ -5,7 +5,6 @@ import { GLOB_CONFIG_FILE_NAME, OUTPUT_DIR } from './constant';
 import colors from 'picocolors';
 import { getEnvConfig, getRootPath } from './utils';
 import pkg from '../package.json';
-// import { mkdirp, writeFile } from "fs-extra";
 
 interface CreateConfigParams {
   configName: string;
@@ -25,9 +24,10 @@ async function createConfig(params: CreateConfigParams) {
         writable: false,
       });
     `.replace(/\s/g, '');
-    const { mkdirp, writeFile } = await import('fs-extra');
-    mkdirp(getRootPath(OUTPUT_DIR));
-    writeFile(getRootPath(`${OUTPUT_DIR}/${configFileName}`), configStr);
+    const fs = await import('fs-extra');
+
+    fs.mkdirp(getRootPath(OUTPUT_DIR));
+    fs.writeFileSync(getRootPath(`${OUTPUT_DIR}/${configFileName}`), configStr);
 
     console.log(colors.cyan(`✨ [${pkg.name}]`) + ` - configuration file is build successfully:`);
     console.log(colors.gray(OUTPUT_DIR + '/' + colors.green(configFileName)) + '\n');
