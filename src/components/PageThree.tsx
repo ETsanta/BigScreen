@@ -18,22 +18,22 @@ const pageThree = ({ ListData = [] }: { ListData: Device[] }) => {
       <div className="dev-list">
         <div className="dev-list-chart">
           {Array.from({ length: 3 }).map((_, index) => (
-            <Line chartData={ListData[index]} key={index} height="20vh" width="30vw" />
+            <Line chartData={ListData[index]} key={index} height="20vh" width="32vw" />
           ))}
         </div>
         <div className="dev-list-chart">
           {Array.from({ length: 3 }).map((_, index) => (
-            <Line chartData={ListData[3 + index]} key={3 + index} height="20vh" width="30vw" />
+            <Line chartData={ListData[3 + index]} key={3 + index} height="20vh" width="32vw" />
           ))}
         </div>
         <div className="dev-list-chart">
           {Array.from({ length: 3 }).map((_, index) => (
-            <Line chartData={ListData[6 + index]} key={6 + index} height="20vh" width="30vw" />
+            <Line chartData={ListData[6 + index]} key={6 + index} height="20vh" width="32vw" />
           ))}
         </div>
         <div className="dev-list-chart">
           {Array.from({ length: 2 }).map((_, index) => (
-            <Line chartData={ListData[9 + index]} key={9 + index} height="20vh" width="46vw" />
+            <Line chartData={ListData[9 + index]} key={9 + index} height="20vh" width="48vw" />
           ))}
         </div>
       </div>

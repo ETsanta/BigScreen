@@ -13,10 +13,10 @@ interface Device {
   list: DeviceContext[];
   time: string[];
 }
-function parseTime(timeStr) {
+function parseTime(timeStr: any) {
   const [hours, minutes] = timeStr.split(':').map(Number);
   console.log(hours, minutes);
-  
+
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
@@ -38,6 +38,10 @@ const BarChartComponent = ({
   const containerRef = useRef(null);
   const colorList = ["#0060b9", "#00dcd3", "#ffffff", "#01bf74", "#f3229f", "#e2f917", "#d701e3", "#ef6815"];
   const [options, setOption] = useState({
+    color: ['#0afefb', '#fd03fb', '#f8fa02', '#0205ff', '#fa0106',
+      '#08f902', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
+      '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
+      '#6699FF', '#ff6666', '#3cb371', '#b8860b', '#30e0e0'],
     title: {
       text: "",
       left: 0,
@@ -52,9 +56,9 @@ const BarChartComponent = ({
       boundaryGap: false,
       data: [],
       axisLabel: {
-        formatter: function (value) {
-          return new Date(Number(value)).getHours() + ":" + new Date(Number(value)).getMinutes()
-        }
+        // formatter: function (value) {
+        //   return new Date(Number(value)).getHours() + ":" + new Date(Number(value)).getMinutes()
+        // }
       },
       axisLine: {
         symbol: 'none',
@@ -65,37 +69,60 @@ const BarChartComponent = ({
     },
 
     tooltip: {
-      trigger: 'axis',
+      trigger: 'item', // 触发类型，默认数据项触发，可选为：'item' | 'axis'
+      formatter: function (params: any) {
+        // params 是一个包含数据点信息的对象，可以根据需要自定义显示内容
+        // 例如，这里只显示数据值和名称
+        return params.seriesName + '<br/>' + params.name + ' : ' + params.value;
+      }
     },
     legend: {
       data: [],
       icon: 'circle',
       itemWidth: 5,
       itemHeight: 5,
-      left: 50,
+      left: 80,
       textStyle: {
         color: '#C6D1DB',
         fontSize: 10,
       },
-
       show: true,
     },
-    yAxis: {
-      type: "value",
-      showSymbol: false,
-      axisLine: {
-        symbol: 'none',
-        lineStyle: {
-          color: '#B4C0CC',
+    yAxis: [
+      {
+        type: "value",
+        showSymbol: false,
+        axisLine: {
+          symbol: 'none',
+          lineStyle: {
+            color: '#B4C0CC',
+          },
+        },
+        splitLine: {
+          lineStyle: {
+            color: 'rgba(255, 255, 255, 0.12)',
+            type: 'dashed',
+          },
         },
       },
-      splitLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.12)',
-          type: 'dashed',
+      {
+        type: "value",
+        showSymbol: false,
+        position: "right",
+        axisLine: {
+          symbol: 'none',
+          lineStyle: {
+            color: '#B4C0CC',
+          },
         },
-      },
-    },
+        splitLine: {
+          lineStyle: {
+            color: 'rgba(255, 255, 255, 0.12)',
+            type: 'dashed',
+          },
+        },
+      }
+    ],
     grid: {
       left: '10%',
       right: '5%',
@@ -120,7 +147,6 @@ const BarChartComponent = ({
         Object.assign(newOptions, cloneDeep(option));
       }
 
-      // 生成series和legend逻辑
       let seriesParam = [];
       let flag = 0;
       let legend = [];
@@ -129,20 +155,17 @@ const BarChartComponent = ({
           const childName = element.axis[j];
           const childData = element.data[j];
           legend.push(element.name + "-" + childName);
-          let join = (j % 2) == 0 ? [
+          let join = [
             ' {a|{c}}',
             '{d|●}'
-          ].join('') : [
-            '  {d|●}',
-            '  {a|{c}}'
-          ].join('');
+          ].join('')
           let param = {
             data: childData,
             name: element.name + "-" + childName,
             type: "line",
             smooth: true,
+            yAxisIndex: 0,
             showSymbol: false,
-            color: colorList[flag],
             markPoint: {
               showSymbol: true,
               symbolSize: 0,
@@ -169,11 +192,13 @@ const BarChartComponent = ({
               ],
             },
             lineStyle: {
-              color: colorList[flag],
               width: 2,
             },
           }
           flag++
+          if (childName === '温度') {
+            param.yAxisIndex = 1;
+          }
           seriesParam.push(param);
         }
       }

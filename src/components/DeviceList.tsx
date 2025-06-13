@@ -11,13 +11,14 @@ import ImageMarker from "@/components/Points";
 
 interface SensorStatusItem {
     sensor_sn: string;
-    sensor_runstate: 0 | 1; // 0表示关，1表示开
+    sensor_name: string;
+    sensor_runstate: string;
 }
 
 interface Device {
     device_name: string;
     device_type: string;
-    device_runstate: 0 | 1; // 0表示关，1表示开
+    device_runstate: string; // 0表示关，1表示开
     device_runtime: string;
     sensor_list?: SensorStatusItem[];
     temp_sensor_infos?: SensorStatusItem[];
@@ -25,9 +26,9 @@ interface Device {
 }
 const DeviceList = ({ Data = {
     device_name: "",
-    device_type: "0",
+    device_type: "1",
     sensor_list: [],
-    device_runstate: 0, // 0是关 1是开
+    device_runstate: "true",
     device_runtime: "", //单位小时 || 分钟，
     temp_sensor_infos: [
     ],
@@ -55,11 +56,11 @@ const DeviceList = ({ Data = {
         { x: 650, y: 1200, color: '', code: "电流" },
     ]);
 
-    const AlertLight = ({ status = "0", size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
+    const AlertLight = ({ status = "在线", size = 1, colorMap = { 0: '#05e348', 1: '#e20202' } }) => {
         return (
             <div
                 className={classNames(styles.light, {
-                    [styles.alert]: status === "1",  // 当 status=1 时添加 alert 类名
+                    [styles.alert]: status != "在线",
                 })}
                 style={{
                     '--light-size': `${size}vw`,     // 动态控制尺寸
@@ -70,7 +71,7 @@ const DeviceList = ({ Data = {
         );
     };
 
-    const WarnLight = ({ name = "", status = "0", }) => {
+    const WarnLight = ({ name = "", status = "在线", }) => {
         return (
             <>
                 <div className="device-warnLight">
@@ -94,13 +95,13 @@ const DeviceList = ({ Data = {
         convertVhToPx()
     }
     function handlePoints() {
-        let param = []
-        Data.temp_sensor_infos.map((item, index) => {
+        let param:any = []
+        Data.temp_sensor_infos?.map((item, index) => {
             switch (Data.device_type) {
-                case "0":
+                case "1":
                     points1.map((itemChild, index) => {
                         if (itemChild.code == item.sensor_sn) {
-                            points1[index].color = item.sensor_runstate == 0 ? '#05e348' : '#e20202'
+                            points1[index].color = item.sensor_runstate == "在线" ? '#05e348' : '#e20202'
                             param.push(points1[index])
                         } else {
                             param.push(itemChild)
@@ -108,10 +109,10 @@ const DeviceList = ({ Data = {
                     })
                     setPoints1(param)
                     break;
-                case "1":
+                case "2":
                     points2.map((itemChild, index) => {
                         if (itemChild.code == item.sensor_sn) {
-                            points2[index].color = item.sensor_runstate == 0 ? '#05e348' : '#e20202'
+                            points2[index].color = item.sensor_runstate == "在线" ? '#05e348' : '#e20202'
                             param.push(points2[index])
                         } else {
                             param.push(itemChild)
@@ -119,10 +120,10 @@ const DeviceList = ({ Data = {
                     })
                     setPoints2(param)
                     break;
-                case "2":
+                case "3":
                     points3.map((itemChild, index) => {
                         if (itemChild.code == item.sensor_sn) {
-                            points3[index].color = item.sensor_runstate == 0 ? '#05e348' : '#e20202'
+                            points3[index].color = item.sensor_runstate == "在线" ? '#05e348' : '#e20202'
                             param.push(points3[index])
                         } else {
                             param.push(itemChild)
@@ -145,8 +146,10 @@ const DeviceList = ({ Data = {
     }
     window.addEventListener('resize', handleResize);
     useEffect(() => {
-        comboSensor()
-        handlePoints()
+        if (Data.device_runtime) {
+            comboSensor()
+            handlePoints()
+        }
     }, [Data])
     useEffect(() => {
         convertVhToPx();
@@ -156,7 +159,7 @@ const DeviceList = ({ Data = {
             <div className="device-list">
                 <div className="device-name">{Data.device_name}</div>
                 <div style={{ width: width + 'px', height: height + 'px' }}>
-                    {Data.device_type == '0' ? <img src={DeviceImg} alt={Data.device_name} width={width + 'px'} height={height + 'px'} /> : Data.device_type == '1' ? <img src={D2} alt={Data.device_name} width={width + 'px'} height={height + 'px'} /> : <img src={D3} alt={Data.device_name} width={width + 'px'} height={height + 'px'} />}
+                    {Data.device_type == '1' ? <img src={DeviceImg} alt={Data.device_name} width={width + 'px'} height={height + 'px'} /> : Data.device_type == '2' ? <img src={D2} alt={Data.device_name} width={width + 'px'} height={height + 'px'} /> : Data.device_type == '3' ? <img src={D3} alt={Data.device_name} width={width + 'px'} height={height + 'px'} /> : <img src={DeviceImg} alt={Data.device_name} width={width + 'px'} height={height + 'px'} />}
                     {/* <ImageMarker
                         image={Data.device_type == "0" ? DeviceImg : Data.device_type == "1" ? D2 : D3}
                         points={Data.device_type == "0" ? points1 : Data.device_type == "1" ? points2 : points3}
@@ -178,13 +181,13 @@ const DeviceList = ({ Data = {
                         alignItems: "center"
                     }}>
                         <span className="device-item">运行状态</span>
-                        <StatusDot status={Data.device_type == "0"}></StatusDot>
+                        <StatusDot status={Data.device_runstate == "false"}></StatusDot>
                     </div>
                 </div>
                 <div className="device-runTime"><span className="device-item">运行时间</span><span className="device-runTime-time">{Data.device_runtime}</span></div>
                 <div className="sensor-list">
                     {
-                        Data.sensor_list && Data.sensor_list.map((item, index) => <WarnLight key={index} name={item.sensor_sn} status={item.sensor_runstate} />)
+                        Data.sensor_list && Data.sensor_list.map((item, index) => <WarnLight key={index} name={item.sensor_name} status={item.sensor_runstate} />)
                     }
                 </div>
             </div >

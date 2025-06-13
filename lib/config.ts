@@ -25,9 +25,8 @@ async function createConfig(params: CreateConfigParams) {
       });
     `.replace(/\s/g, '');
     const fs = await import('fs-extra');
-
     fs.mkdirp(getRootPath(OUTPUT_DIR));
-    fs.writeFileSync(getRootPath(`${OUTPUT_DIR}/${configFileName}`), configStr);
+    fs.outputFile(getRootPath(`${OUTPUT_DIR}/${configFileName}`), configStr);
 
     console.log(colors.cyan(`✨ [${pkg.name}]`) + ` - configuration file is build successfully:`);
     console.log(colors.gray(OUTPUT_DIR + '/' + colors.green(configFileName)) + '\n');
