@@ -42,18 +42,18 @@ function App() {
   }
   function page1() {
     setListData2([]);
-    getPage1()
-      .then((res) => {
-        if (res.data && res.data["device_list"] && "run_rate" in res.data) {
-          setDeviceList(res.data.device_list);
-          setRunRate(res.data.run_rate);
-        } else {
-          messageApi.error("数据获取失败");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // getPage1()
+    //   .then((res) => {
+    //     if (res.data && res.data["device_list"] && "run_rate" in res.data) {
+    //       setDeviceList(res.data.device_list);
+    //       setRunRate(res.data.run_rate);
+    //     } else {
+    //       messageApi.error("数据获取失败");
+    //     }
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   }
   function page2() {
     setDeviceList([]);
@@ -125,7 +125,7 @@ function App() {
     page1();
   }, []);
 
-  initInterval();
+  // initInterval();
 
   return (
     <>
@@ -134,9 +134,6 @@ function App() {
         <div className="dev-list-area">
           <div className="dev-list-header"></div>
           <div className="dev-list-header-title">
-            <div className="dev-list-header-title-icon">
-              <img src={iconImg} alt="" />
-            </div>
             <div className="dev-list-header-title-text">
               {page == 1
                 ? "设备基本信息"
@@ -144,11 +141,16 @@ function App() {
                 ? "设备电流记录"
                 : "设备温振记录"}
             </div>
-            <div className="progress-bar-Div">
-              <ProgressBar
-                percentage={runRate}
-                context={"开动率"}
-              ></ProgressBar>
+            <div className="dev-list-header-title-left">
+              <div className="dev-list-header-title-icon">
+                <img src={iconImg} alt="" />
+              </div>
+              <div className="progress-bar-Div">
+                <ProgressBar
+                  percentage={runRate}
+                  context={"开动率"}
+                ></ProgressBar>
+              </div>
             </div>
           </div>
 
