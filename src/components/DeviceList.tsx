@@ -6,7 +6,6 @@ import "@/css/DeviceList.less"
 import classNames from 'classnames';
 import styles from "@/css/AlertLight.module.less";
 import StatusDot from "@/components/Status";
-import ImageMarker from "@/components/Points";
 
 
 interface SensorStatusItem {
