@@ -42,18 +42,18 @@ function App() {
   }
   function page1() {
     setListData2([]);
-    // getPage1()
-    //   .then((res) => {
-    //     if (res.data && res.data["device_list"] && "run_rate" in res.data) {
-    //       setDeviceList(res.data.device_list);
-    //       setRunRate(res.data.run_rate);
-    //     } else {
-    //       messageApi.error("数据获取失败");
-    //     }
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    getPage1()
+      .then((res) => {
+        if (res.data && res.data["device_list"] && "run_rate" in res.data) {
+          setDeviceList(res.data.device_list);
+          setRunRate(res.data.run_rate);
+        } else {
+          messageApi.error("数据获取失败");
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
   function page2() {
     setDeviceList([]);
@@ -125,7 +125,7 @@ function App() {
     page1();
   }, []);
 
-  // initInterval();
+  initInterval();
 
   return (
     <>
