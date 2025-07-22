@@ -1,0 +1,6 @@
+{
+  "appId": "Compony.App",
+  "appName": "bigscreen",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

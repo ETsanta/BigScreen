@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@capacitor/android": "^7.4.2",
+    "@capacitor/cli": "^7.4.2",
+    "@capacitor/core": "^7.4.2",
     "ahooks": "^3.8.4",
     "antd": "^5.24.8",
     "axios": "^1.8.4",
