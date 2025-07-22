@@ -12,7 +12,7 @@ import { getPage1, getPage2, getPage3 } from "@/api/api";
 import { message, Spin } from "antd";
 
 function App() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [deviceList, setDeviceList] = useState([]);
   const [runRate, setRunRate] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
@@ -122,10 +122,10 @@ function App() {
     }, 15000);
   }
   useEffect(() => {
-    page1();
+    page2();
   }, []);
 
-  initInterval();
+  // initInterval();
 
   return (
     <>
@@ -134,9 +134,6 @@ function App() {
         <div className="dev-list-area">
           <div className="dev-list-header"></div>
           <div className="dev-list-header-title">
-            <div className="dev-list-header-title-icon">
-              <img src={iconImg} alt="" />
-            </div>
             <div className="dev-list-header-title-text">
               {page == 1
                 ? "设备基本信息"
@@ -144,11 +141,16 @@ function App() {
                 ? "设备电流记录"
                 : "设备温振记录"}
             </div>
-            <div className="progress-bar-Div">
-              <ProgressBar
-                percentage={runRate}
-                context={"开动率"}
-              ></ProgressBar>
+            <div className="dev-list-header-title-left">
+              <div className="dev-list-header-title-icon">
+                <img src={iconImg} alt="" />
+              </div>
+              <div className="progress-bar-Div">
+                <ProgressBar
+                  percentage={runRate}
+                  context={"开动率"}
+                ></ProgressBar>
+              </div>
             </div>
           </div>
 
