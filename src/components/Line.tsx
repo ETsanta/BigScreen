@@ -38,7 +38,7 @@ const BarChartComponent = ({
   const containerRef = useRef(null);
   const colorList = ["#0060b9", "#00dcd3", "#ffffff", "#01bf74", "#f3229f", "#e2f917", "#d701e3", "#ef6815"];
   const [options, setOption] = useState({
-    color: ['#0afefb', '#fd03fb', '#f8fa02', '#0205ff', '#fa0106',
+    color: ['#0afefb', '#fd03fb', '#f8fa02', '#21a6fe', '#fa0106',
       '#08f902', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
       '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
       '#6699FF', '#ff6666', '#3cb371', '#b8860b', '#30e0e0'],
@@ -108,6 +108,7 @@ const BarChartComponent = ({
       {
         type: "value",
         showSymbol: false,
+        name: "°C",
         position: "right",
         axisLine: {
           symbol: 'none',
@@ -141,7 +142,6 @@ const BarChartComponent = ({
 
   const initChart = useCallback(() => {
     setOption(prevOptions => {
-      // 深拷贝当前配置并合并传入的option
       const newOptions = cloneDeep(prevOptions);
       if (option) {
         Object.assign(newOptions, cloneDeep(option));
